@@ -89,7 +89,7 @@ async def handle_location(message: types.Message):
 
 
 @dp.message_handler(commands=['location'])
-async def cmd_locate_me(message: types.Message):
+async def locate_me(message: types.Message):
     reply = "Click on the the button below to share your location"
     await message.answer(reply, reply_markup=get_keyboard())
 
@@ -121,7 +121,7 @@ async def inline_echo(inline_query: InlineQuery):
 
 ''' Get Help '''
 @dp.message_handler(commands="help")
-async def cmd_start(message: types.Message):
+async def get_help(message: types.Message):
     await message.answer("/location — will send your geolocation to show the weather")
 
 
