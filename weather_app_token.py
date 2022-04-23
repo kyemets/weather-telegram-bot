@@ -1,0 +1,1 @@
+WEATHER_APP_TOKEN = 'openweather_app_token'
