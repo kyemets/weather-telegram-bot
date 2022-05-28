@@ -12,8 +12,6 @@ from aiogram import Bot, Dispatcher, executor
 from aiogram.types import InlineQuery, InputTextMessageContent, InlineQueryResultArticle
 
 app = Flask(__name__)
-
-
 bot = Bot(TOKEN)
 dp = Dispatcher(bot)
 server = Flask(__name__)
@@ -68,9 +66,6 @@ async def handle_location(message: types.Message):
     convert_to_celcius_temp_after_tomorrow = (int(get_temp_day_after_tomorrow) - 273)
     math.ceil(convert_to_celcius_temp_after_tomorrow)
 
-    
-
-
     await message.answer(
         fmt.text(
             fmt.text("☂️ Current Weather ", ),
@@ -87,7 +82,7 @@ async def handle_location(message: types.Message):
         ), parse_mode="HTML"
     )
 
-
+    
 @dp.message_handler(commands=['location'])
 async def locate_me(message: types.Message):
     reply = "Click on the the button below to share your location"
@@ -101,10 +96,12 @@ async def inline_echo(inline_query: InlineQuery):
     input_content = InputTextMessageContent(text)
     result_id: str = hashlib.md5(text.encode()).hexdigest()
 
+    # send a requests
     inline_response = requests.get('https://api.openweathermap.org/data/2.5/weather?q={}&appid={}'.format(text, WEATHER_APP_TOKEN))
     json_response = inline_response.json()
     get_temp = json_response['main']['temp']
 
+    # convert to celcius
     convert_to_celcius = (int(get_temp) - 273)
     math.ceil(convert_to_celcius)
 
@@ -113,17 +110,13 @@ async def inline_echo(inline_query: InlineQuery):
         title=f'{text}:  {convert_to_celcius!r} °C',
         input_message_content=input_content,
     )
-
     await bot.answer_inline_query(inline_query.id, results=[item], cache_time=1)
-
-
 
 
 ''' Get Help '''
 @dp.message_handler(commands="help")
 async def get_help(message: types.Message):
     await message.answer("/location — will send your geolocation to show the weather")
-
 
 
 if __name__ == '__main__':
@@ -136,4 +129,3 @@ if __name__ == '__main__':
         url_path=TOKEN,
         webhook_url=  'https://weather-app-tgbot.herokuapp.com/'+ TOKEN
     )
-    
